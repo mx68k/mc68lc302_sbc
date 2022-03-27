@@ -1,15 +1,22 @@
-tinybug.bin
-ROM:00000000 ; Format	   : Binary file
+
 ROM:00000000 ; Base Address: 0000h Range: 0000h	- 2CD0h	Loaded length: 2CD0h
 ROM:00000000
 ROM:00000000 ; Processor:	 68000
+ROM:00000000
 ROM:00000000 ; ===========================================================================
 ROM:00000000
 ROM:00000000 ; Segment type: Pure code
 ROM:00000000 ; segment "ROM"
-ROM:00000000 RAMbase_Plus_$FFFC:dc.l $21FFFC	 ; DATA XREF: ROM:000004BE
-ROM:00000000					     		     ; ROM:000004C2 ...
-ROM:00000000					       ; RAMbase+$FFFC	      *	stack at the top task
+ROM:00000000 RAMbase_Plus_$FFFC:dc.l $21FFFC	     ; DATA XREF: ROM:000004BE
+ROM:00000000					     ; ROM:000004C2
+ROM:00000000					     ; ROM:000004C6
+ROM:00000000					     ; ROM:000004CA
+ROM:00000000					     ; ROM:000004CE
+ROM:00000000					     ; ROM:00000DF6
+ROM:00000000					     ; ROM:00000DFA
+ROM:00000000					     ; ROM:00000E00
+ROM:00000000					     ; ROM:00000E0A
+ROM:00000000					     ; RAMbase+$FFFC	      *	stack at the top task
 ROM:00000004 off_4:	     dc.l start		     ; DATA XREF: ROM:00000E6C
 ROM:00000004					     ; * start address
 ROM:00000008		     dc.l buserr	     ; * BERR handler
@@ -70,21 +77,14 @@ ROM:000000E0		     dc.l sub_1ED0
 ROM:000000E4		     dc.l sub_1ED0
 ROM:000000E8		     dc.l sub_1ED0
 ROM:000000EC		     dc.l sub_1ED0
-ROM:000000F0		     dc.b $FF
-ROM:000000F1		     dc.b $FF
+ROM:000000F0		     dc.w $FFFF
 ROM:000000F2 word_F2:	     dc.w $FFFF		     ; DATA XREF: ROM:00000404
-ROM:000000F4		     dc.b $FF
-ROM:000000F5		     dc.b $FF
-ROM:000000F6		     dc.b $FF
-ROM:000000F7		     dc.b $FF
-ROM:000000F8		     dc.b $FF
-ROM:000000F9		     dc.b $FF
-ROM:000000FA		     dc.b $FF
-ROM:000000FB		     dc.b $FF
-ROM:000000FC		     dc.b $FF
-ROM:000000FD		     dc.b $FF
-ROM:000000FE		     dc.b $FF
-ROM:000000FF		     dc.b $FF
+ROM:000000F4		     dc.w $FFFF
+ROM:000000F6		     dc.w $FFFF
+ROM:000000F8		     dc.w $FFFF
+ROM:000000FA		     dc.w $FFFF
+ROM:000000FC		     dc.w $FFFF
+ROM:000000FE		     dc.w $FFFF
 ROM:00000100		     dc.l sub_1ED0
 ROM:00000104		     dc.l sub_1ED0
 ROM:00000108		     dc.l sub_1ED0
@@ -157,24 +157,8 @@ ROM:00000210		     dc.l sub_1ED0
 ROM:00000214		     dc.l sub_1ED0
 ROM:00000218		     dc.l sub_1ED0
 ROM:0000021C		     dc.l sub_1ED0
-ROM:00000220		     dc.l sub_254A
-ROM:00000224		     dc.l timer1isr	     ; * No. $88, SCC3
-ROM:00000224					     ; * No. $89, service the 10ms OS timer
-ROM:00000224					     ; * No. $8A, SCC2
-ROM:00000224					     ; * No. $8B, IDMA
-ROM:00000224					     ; * No. $8C, SDMA BERR
-ROM:00000224					     ; * No. $8D, SCC1
-ROM:00000224					     ; * No. $8E, PB10
-ROM:00000224					     ; * No. $8F, PB11
-ROM:00000224					     ; * No. $90
-ROM:00000224					     ; * No. $91, Extern
-ROM:00000224					     ; * No. $92
-ROM:00000224					     ; * No. $93
-ROM:00000224					     ; * No. $94
-ROM:00000224					     ; * No. $95
-ROM:00000224					     ; * No. $96, Extern
-ROM:00000224					     ; * No. $97, Extern
-ROM:00000224					     ; * rest are unknown
+ROM:00000220		     dc.l sub_254A	     ; * SCC3 Int
+ROM:00000224		     dc.l timer1isr	     ; * Timer 1 Int
 ROM:00000228		     dc.l sub_1ED0
 ROM:0000022C		     dc.l sub_1ED0
 ROM:00000230		     dc.l sub_1ED0
@@ -394,15 +378,15 @@ ROM:0000057A		     move.w  #0,($FFF81E).l  ; * port A	control	register
 ROM:00000582		     move.w  #$8000,($FFF820).l	; * port A Data	Direction Reg
 ROM:0000058A		     move.w  #$7FFF,($FFF822).l	; * port A Data	Reg
 ROM:00000592		     move.w  #$300,($FFF81E).l ; * port	A control register
-ROM:0000059A		     move.w  #$32,($FFF8A2).l ;	'2' ; SCC3 Configuration Register !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-ROM:000005A2		     move.w  #$131,($FFF8A4).l ; SCC3 Mode Register !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ROM:0000059A		     move.w  #$32,($FFF8A2).l ;	'2' ; SCC3 Configuration Register !!!!!!!!!!!!
+ROM:000005A2		     move.w  #$131,($FFF8A4).l ; SCC3 Mode Register !!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:000005AA		     move.w  #$2020,($FFF680).l	; SCC3 Specific	Protocol Parameters !!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:000005B2		     move.w  #$204,($FFF682).l ; SCC3 Specific Protocol	Parameters !!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:000005BA		     move.w  #$26,($FFF69C).l ;	'&' ; SCC3 Specific Protocol Parameters !!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:000005C2		     move.w  #$D,($FFF6B0).l ; SCC3 Specific Protocol Parameters !!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:000005CA		     move.w  #$8000,($FFF6B2).l	; SCC3 Specific	Protocol Parameters !!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:000005D2		     move.w  #0,($FFF6BE).l  ; SCC3 Specific Protocol Parameters !!!!!!!!!!!!!!!!!!!!!!!!!!
-ROM:000005DA		     move.b  #3,($FFF8AA).l  ; SCC3 Mask Register !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ROM:000005DA		     move.b  #3,($FFF8AA).l  ; SCC3 Mask Register !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:000005E2		     move.w  #$D000,($FFF600).l	; SCC3 RxBD0 !!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:000005EA		     move.w  #$210,($FFF602).l ; SCC3 RxBD0 !!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:000005F2		     move.l  #$21C010,($FFF604).l ; SCC3 RxBD0 !!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -414,7 +398,7 @@ ROM:0000061E		     move.w  #$7D0,($FFF642).l ; SCC3 TxBD0 !!!!!!!!!!!!!!!!!!!!!!
 ROM:00000626		     move.l  #$21C430,($FFF644).l ; SCC3 TxBD0 !!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:00000630		     clr.b   ($21CCE7).l
 ROM:00000636		     move.w  #$200,($FFF816).l ; *Interrupt Mask Register
-ROM:0000063E		     move.w  #$13D,($FFF8A4).l ; SCC3 Mode Register !!!!!!!!!!!!!!!!!!!!!!!!!!!
+ROM:0000063E		     move.w  #$13D,($FFF8A4).l ; SCC3 Mode Register !!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:00000646		     clr.l   d0
 ROM:00000648		     lea     aTinybugV0_0912,a0	; "\n\rTinyBug v0.09 1/23/2017,	type \"he\" fo"...
 ROM:0000064C		     bsr.w   sub_1E82
@@ -505,14 +489,18 @@ ROM:00000750		     bra.w   loc_760
 ROM:00000754 ; ---------------------------------------------------------------------------
 ROM:00000754
 ROM:00000754 loc_754:				     ; CODE XREF: ROM:000006BC
-ROM:00000754					     ; ROM:000006DA ...
+ROM:00000754					     ; ROM:000006DA
+ROM:00000754					     ; ROM:000006FC
+ROM:00000754					     ; ROM:00000734
+ROM:00000754					     ; ROM:00000744
 ROM:00000754		     lea     a?,a0	     ; "\n\r?> "
 ROM:00000758		     bsr.w   sub_1E82
 ROM:0000075C		     bra.w   loc_768
 ROM:00000760 ; ---------------------------------------------------------------------------
 ROM:00000760
 ROM:00000760 loc_760:				     ; CODE XREF: ROM:00000730
-ROM:00000760					     ; ROM:0000073C ...
+ROM:00000760					     ; ROM:0000073C
+ROM:00000760					     ; ROM:00000750
 ROM:00000760		     lea     asc_FD8,a0	     ; "\n\r> "
 ROM:00000764		     bsr.w   sub_1E82
 ROM:00000768
@@ -522,7 +510,9 @@ ROM:0000076E		     clr.b   ($21CC79).l
 ROM:00000774		     move.l  #$21CC60,($21CC74).l
 ROM:0000077E
 ROM:0000077E loc_77E:				     ; CODE XREF: ROM:00000690
-ROM:0000077E					     ; ROM:00000698 ...
+ROM:0000077E					     ; ROM:00000698
+ROM:0000077E					     ; ROM:000006A2
+ROM:0000077E					     ; ROM:0000074C
 ROM:0000077E		     movem.l (sp)+,d0-a5
 ROM:00000782
 ROM:00000782 locret_782:			     ; CODE XREF: ROM:00000710
@@ -705,7 +695,8 @@ ROM:0000096A		     moveq   #$10,d1
 ROM:0000096C		     lea     aRegisterD0,a1  ; "\n\rRegister D0: "
 ROM:00000970
 ROM:00000970 loc_970:				     ; CODE XREF: ROM:00000948
-ROM:00000970					     ; ROM:00000960 ...
+ROM:00000970					     ; ROM:00000960
+ROM:00000970					     ; sub_964+1C
 ROM:00000970		     bsr.w   sub_9A4
 ROM:00000974		     adda.l  #$10,a1
 ROM:0000097A		     adda.l  #4,a0
@@ -716,7 +707,9 @@ ROM:0000098C		     bra.w   loc_99A
 ROM:00000990 ; ---------------------------------------------------------------------------
 ROM:00000990
 ROM:00000990 loc_990:				     ; CODE XREF: ROM:000008CC
-ROM:00000990					     ; ROM:000008EA...
+ROM:00000990					     ; ROM:000008EA
+ROM:00000990					     ; ROM:00000912
+ROM:00000990					     ; ROM:0000091C
 ROM:00000990		     moveq   #1,d0
 ROM:00000992		     move.b  #1,($21CCD6).l
 ROM:0000099A
@@ -730,7 +723,28 @@ ROM:000009A4 ; =============== S U B R O U T I N E =============================
 ROM:000009A4
 ROM:000009A4
 ROM:000009A4 sub_9A4:				     ; CODE XREF: sub_964:loc_970
-ROM:000009A4					     ; ROM:00000B2A ...
+ROM:000009A4					     ; ROM:00000B2A
+ROM:000009A4					     ; ROM:loc_B3A
+ROM:000009A4					     ; ROM:00000CEE
+ROM:000009A4					     ; ROM:00000D96
+ROM:000009A4					     ; ROM:00000DB8
+ROM:000009A4					     ; ROM:00001F66
+ROM:000009A4					     ; sub_21D6+A
+ROM:000009A4					     ; sub_21D6+18
+ROM:000009A4					     ; sub_21D6+26
+ROM:000009A4					     ; sub_21D6+34
+ROM:000009A4					     ; sub_21D6+42
+ROM:000009A4					     ; sub_21D6+50
+ROM:000009A4					     ; sub_21D6+5E
+ROM:000009A4					     ; sub_21D6+6C
+ROM:000009A4					     ; sub_21D6+7A
+ROM:000009A4					     ; sub_21D6+88
+ROM:000009A4					     ; sub_21D6+96
+ROM:000009A4					     ; sub_21D6+A4
+ROM:000009A4					     ; sub_21D6+B2
+ROM:000009A4					     ; sub_21D6+C0
+ROM:000009A4					     ; sub_21D6+CE
+ROM:000009A4					     ; sub_21D6+DC
 ROM:000009A4		     move.l  a0,-(sp)
 ROM:000009A6		     movea.l a1,a0
 ROM:000009A8		     bsr.w   sub_1E82
@@ -845,7 +859,10 @@ ROM:00000B32 loc_B32:				     ; CODE XREF: ROM:00000B20
 ROM:00000B32		     move.b  #$3A,($21CCA0).l ;	':'
 ROM:00000B3A
 ROM:00000B3A loc_B3A:				     ; CODE XREF: ROM:00000B76
-ROM:00000B3A					     ; ROM:00000B96 ...
+ROM:00000B3A					     ; ROM:00000B96
+ROM:00000B3A					     ; ROM:00000BA4
+ROM:00000B3A					     ; ROM:00000BE6
+ROM:00000B3A					     ; ROM:00000BF6
 ROM:00000B3A		     bsr.w   sub_9A4
 ROM:00000B3E		     clr.b   ($21CC79).l
 ROM:00000B44		     clr.b   ($21CC78).l
@@ -898,7 +915,8 @@ ROM:00000BF6		     bra.w   loc_B3A
 ROM:00000BFA ; ---------------------------------------------------------------------------
 ROM:00000BFA
 ROM:00000BFA loc_BFA:				     ; CODE XREF: ROM:00000B80
-ROM:00000BFA					     ; ROM:00000BAE ...
+ROM:00000BFA					     ; ROM:00000BAE
+ROM:00000BFA					     ; ROM:00000BD0
 ROM:00000BFA		     clr.b   ($21CC79).l
 ROM:00000C00		     clr.b   ($21CC78).l
 ROM:00000C06		     move.l  #$21CC60,($21CC74).l
@@ -923,12 +941,17 @@ ROM:00000C4C		     bra.w   loc_C5A
 ROM:00000C50 ; ---------------------------------------------------------------------------
 ROM:00000C50
 ROM:00000C50 loc_C50:				     ; CODE XREF: ROM:00000AA2
-ROM:00000C50					     ; ROM:00000AAE ...
+ROM:00000C50					     ; ROM:00000AAE
+ROM:00000C50					     ; ROM:00000ABE
+ROM:00000C50					     ; ROM:00000AEE
+ROM:00000C50					     ; ROM:00000AF8
+ROM:00000C50					     ; ROM:00000C10
 ROM:00000C50		     moveq   #1,d0
 ROM:00000C52		     move.b  #1,($21CCD6).l
 ROM:00000C5A
 ROM:00000C5A loc_C5A:				     ; CODE XREF: ROM:00000C4C
-ROM:00000C5A					     ; ROM:00000D04 ...
+ROM:00000C5A					     ; ROM:00000D04
+ROM:00000C5A					     ; ROM:00000DD0
 ROM:00000C5A		     move.b  #1,($21CC7B).l
 ROM:00000C62		     rts
 ROM:00000C64 ; ---------------------------------------------------------------------------
@@ -1157,7 +1180,7 @@ ROM:00000F58		     bra.w   loc_F84
 ROM:00000F5C ; ---------------------------------------------------------------------------
 ROM:00000F5C
 ROM:00000F5C loc_F5C:				     ; CODE XREF: sub_EAA+30
-ROM:00000F5C					     ; sub_EAA+48 ...
+ROM:00000F5C					     ; sub_EAA+48 sub_EAA+68
 ROM:00000F5C		     moveq   #1,d0
 ROM:00000F5E		     move.b  #1,($21CCD6).l
 ROM:00000F66		     bra.w   loc_F72
@@ -1184,7 +1207,8 @@ ROM:00000F9C ; =============== S U B R O U T I N E =============================
 ROM:00000F9C
 ROM:00000F9C
 ROM:00000F9C sub_F9C:				     ; CODE XREF: ROM:00000B54
-ROM:00000F9C					     ; sub_F9C+6 ...
+ROM:00000F9C					     ; sub_F9C+6
+ROM:00000F9C					     ; ROM:loc_1FCA
 ROM:00000F9C		     tst.b   ($21CC79).l
 ROM:00000FA2		     beq.s   sub_F9C
 ROM:00000FA4		     rts
@@ -1195,10 +1219,14 @@ ROM:00000FA6 aTinybugV0_0912:dc.b $A		     ; DATA XREF: ROM:00000648
 ROM:00000FA6		     dc.b $D,'TinyBug v0.09 1/23/2017, type "he" for help',$A
 ROM:00000FA6		     dc.b $D,'> ',0
 ROM:00000FD8 asc_FD8:	     dc.b $A		     ; DATA XREF: ROM:loc_760
-ROM:00000FD8					     ; sub_2692:loc_28C0 ...
+ROM:00000FD8					     ; sub_2692:loc_28C0
+ROM:00000FD8					     ; sub_296C:loc_2A92
+ROM:00000FD8					     ; sub_296C:loc_2B2E
 ROM:00000FD8		     dc.b $D,'> ',0
 ROM:00000FDD a?:	     dc.b $A		     ; DATA XREF: ROM:loc_754
-ROM:00000FDD					     ; sub_2692:loc_2768 ...
+ROM:00000FDD					     ; sub_2692:loc_2768
+ROM:00000FDD					     ; sub_296C+136
+ROM:00000FDD					     ; sub_296C+1D2
 ROM:00000FDD		     dc.b $D,'?> ',0
 ROM:00000FE3		     dc.b  $A
 ROM:00000FE4		     dc.b  $D
@@ -1367,7 +1395,8 @@ ROM:00001B1A		     dc.w $FFC
 ROM:00001B1C		     dc.w $4EF9
 ROM:00001B1E		     dc.l $600450
 ROM:00001B22 aRegisterD0:    dc.b $A		     ; DATA XREF: ROM:0000095A
-ROM:00001B22					     ; sub_964+8 ...
+ROM:00001B22					     ; sub_964+8
+ROM:00001B22					     ; ROM:00000B10
 ROM:00001B22		     dc.b $D,'Register D0: ',0
 ROM:00001B32		     dc.b  $A
 ROM:00001B33		     dc.b  $D
@@ -1787,7 +1816,8 @@ ROM:00001CF2 ; =============== S U B R O U T I N E =============================
 ROM:00001CF2
 ROM:00001CF2
 ROM:00001CF2 sub_1CF2:				     ; CODE XREF: ROM:00000512
-ROM:00001CF2					     ; ROM:loc_A32 ...
+ROM:00001CF2					     ; ROM:loc_A32
+ROM:00001CF2					     ; sub_EAA+CE
 ROM:00001CF2		     move.b  #$A,($21CC4C).l
 ROM:00001CFA		     move.b  #$D,($21CC4D).l
 ROM:00001D02		     move.b  #$3A,($21CC54).l ;	':'
@@ -1804,7 +1834,10 @@ ROM:00001D34 ; =============== S U B R O U T I N E =============================
 ROM:00001D34
 ROM:00001D34
 ROM:00001D34 sub_1D34:				     ; CODE XREF: sub_784:loc_7DC
-ROM:00001D34					     ; ROM:00000BC8 ...
+ROM:00001D34					     ; ROM:00000BC8
+ROM:00001D34					     ; sub_EAA+60
+ROM:00001D34					     ; sub_2692+17E
+ROM:00001D34					     ; sub_2C48+6
 ROM:00001D34		     cmp.b   #$66,d0 ; 'f'
 ROM:00001D38		     bhi.w   loc_1D64
 ROM:00001D3C		     cmp.b   #$60,d0 ; '`'
@@ -1819,7 +1852,8 @@ ROM:00001D5C		     cmp.b   #$2F,d0 ; '/'
 ROM:00001D60		     bhi.w   loc_1D74
 ROM:00001D64
 ROM:00001D64 loc_1D64:				     ; CODE XREF: sub_1D34+4
-ROM:00001D64					     ; sub_1D34+14 ...
+ROM:00001D64					     ; sub_1D34+14
+ROM:00001D64					     ; sub_1D34+24
 ROM:00001D64		     move.b  #$FF,d0
 ROM:00001D68		     bra.w   locret_1D80
 ROM:00001D6C ; ---------------------------------------------------------------------------
@@ -1838,7 +1872,8 @@ ROM:00001D7C loc_1D7C:				     ; CODE XREF: sub_1D34+C
 ROM:00001D7C		     sub.b   #$57,d0 ; 'W'
 ROM:00001D80
 ROM:00001D80 locret_1D80:			     ; CODE XREF: sub_1D34+34
-ROM:00001D80					     ; sub_1D34+3C ...
+ROM:00001D80					     ; sub_1D34+3C
+ROM:00001D80					     ; sub_1D34+44
 ROM:00001D80		     rts
 ROM:00001D80 ; End of function sub_1D34
 ROM:00001D80
@@ -1847,7 +1882,14 @@ ROM:00001D82 ; =============== S U B R O U T I N E =============================
 ROM:00001D82
 ROM:00001D82
 ROM:00001D82 sub_1D82:				     ; CODE XREF: sub_1DB6+8
-ROM:00001D82					     ; sub_1DB6+14 ...
+ROM:00001D82					     ; sub_1DB6+14
+ROM:00001D82					     ; sub_1DB6+20
+ROM:00001D82					     ; sub_1DB6+2A
+ROM:00001D82					     ; sub_1DEE+C sub_1E26+6
+ROM:00001D82					     ; sub_1E26+1C
+ROM:00001D82					     ; sub_1E26+30
+ROM:00001D82					     ; sub_1E26+3E
+ROM:00001D82					     ; sub_1E26+4C
 ROM:00001D82		     movem.l d1,-(sp)
 ROM:00001D86		     move.b  d0,d1
 ROM:00001D88		     lsr.b   #4,d1
@@ -1901,7 +1943,10 @@ ROM:00001DEE ; =============== S U B R O U T I N E =============================
 ROM:00001DEE
 ROM:00001DEE
 ROM:00001DEE sub_1DEE:				     ; CODE XREF: addrerr+24
-ROM:00001DEE					     ; addrerr+34 ...
+ROM:00001DEE					     ; addrerr+34
+ROM:00001DEE					     ; ROM:000020D4 trace+2C
+ROM:00001DEE					     ; trace+3C trace+4C
+ROM:00001DEE					     ; buserr+24 buserr+34
 ROM:00001DEE		     movem.l d1-d2,-(sp)
 ROM:00001DF2		     move.w  #3,d2
 ROM:00001DF6
@@ -1923,7 +1968,8 @@ ROM:00001E12 ; =============== S U B R O U T I N E =============================
 ROM:00001E12
 ROM:00001E12
 ROM:00001E12 sub_1E12:				     ; CODE XREF: sub_1DEE+10
-ROM:00001E12					     ; sub_1DEE+14 ...
+ROM:00001E12					     ; sub_1DEE+14
+ROM:00001E12					     ; sub_1E12+8
 ROM:00001E12		     btst    #2,($21CCE1).l
 ROM:00001E1A		     beq.s   sub_1E12
 ROM:00001E1C		     move.b  d0,($21CCE3).l
@@ -1936,7 +1982,10 @@ ROM:00001E26 ; =============== S U B R O U T I N E =============================
 ROM:00001E26
 ROM:00001E26
 ROM:00001E26 sub_1E26:				     ; CODE XREF: ROM:0000086C
-ROM:00001E26					     ; ROM:00000A0A ...
+ROM:00001E26					     ; ROM:00000A0A
+ROM:00001E26					     ; ROM:00000A4E
+ROM:00001E26					     ; sub_EAA+82
+ROM:00001E26					     ; sub_2692+1E4
 ROM:00001E26		     movem.l d1-d2,-(sp)
 ROM:00001E2A		     move.w  d0,d2
 ROM:00001E2C		     bsr.w   sub_1D82
@@ -1969,7 +2018,44 @@ ROM:00001E82 ; =============== S U B R O U T I N E =============================
 ROM:00001E82
 ROM:00001E82
 ROM:00001E82 sub_1E82:				     ; CODE XREF: ROM:0000064C
-ROM:00001E82					     ; ROM:00000758 ...
+ROM:00001E82					     ; ROM:00000758
+ROM:00001E82					     ; ROM:00000764
+ROM:00001E82					     ; ROM:00000878
+ROM:00001E82					     ; sub_9A4+4 sub_9A4+18
+ROM:00001E82					     ; ROM:00000A16
+ROM:00001E82					     ; ROM:00000A5A
+ROM:00001E82					     ; ROM:00000D0C
+ROM:00001E82					     ; ROM:00000DC4
+ROM:00001E82					     ; ROM:00000DDE
+ROM:00001E82					     ; ROM:00000E12
+ROM:00001E82					     ; ROM:00000E2E
+ROM:00001E82					     ; ROM:00000E94
+ROM:00001E82					     ; sub_EAA+92 addrerr+1C
+ROM:00001E82					     ; addrerr+2C
+ROM:00001E82					     ; ROM:00001F7A
+ROM:00001E82					     ; ROM:00001F8E
+ROM:00001E82					     ; ROM:00002038
+ROM:00001E82					     ; ROM:00002048
+ROM:00001E82					     ; ROM:000020CC
+ROM:00001E82					     ; ROM:0000218A
+ROM:00001E82					     ; ROM:000021A6
+ROM:00001E82					     ; ROM:000021C0 trace+22
+ROM:00001E82					     ; trace+34 trace+44
+ROM:00001E82					     ; ROM:loc_24B0
+ROM:00001E82					     ; sub_2692+DA
+ROM:00001E82					     ; sub_2692+FC
+ROM:00001E82					     ; sub_2692+20A
+ROM:00001E82					     ; sub_2692+232
+ROM:00001E82					     ; sub_296C+108
+ROM:00001E82					     ; sub_296C+122
+ROM:00001E82					     ; sub_296C+12A
+ROM:00001E82					     ; sub_296C+13A
+ROM:00001E82					     ; sub_296C+1A4
+ROM:00001E82					     ; sub_296C+1BE
+ROM:00001E82					     ; sub_296C+1C6
+ROM:00001E82					     ; sub_296C+1D6
+ROM:00001E82					     ; sub_296C+2A8
+ROM:00001E82					     ; buserr+1C buserr+2C
 ROM:00001E82		     movem.l d0/a1,-(sp)
 ROM:00001E86
 ROM:00001E86 loc_1E86:				     ; CODE XREF: sub_1E82+C
@@ -2006,7 +2092,105 @@ ROM:00001ED0
 ROM:00001ED0 ; Attributes: noreturn
 ROM:00001ED0
 ROM:00001ED0 sub_1ED0:				     ; CODE XREF: addrerr+38
-ROM:00001ED0					     ; ROM:000020DC ...
+ROM:00001ED0					     ; ROM:000020DC
+ROM:00001ED0					     ; buserr+38
+ROM:00001ED0					     ; DATA XREF: ROM:00000014
+ROM:00001ED0					     ; ROM:00000018
+ROM:00001ED0					     ; ROM:0000001C
+ROM:00001ED0					     ; ROM:00000020
+ROM:00001ED0					     ; ROM:00000028
+ROM:00001ED0					     ; ROM:0000002C
+ROM:00001ED0					     ; ROM:00000030
+ROM:00001ED0					     ; ROM:00000034
+ROM:00001ED0					     ; ROM:00000038
+ROM:00001ED0					     ; ROM:0000003C
+ROM:00001ED0					     ; ROM:00000040
+ROM:00001ED0					     ; ROM:00000044
+ROM:00001ED0					     ; ROM:00000048
+ROM:00001ED0					     ; ROM:off_4C
+ROM:00001ED0					     ; ROM:00000050
+ROM:00001ED0					     ; ROM:00000054
+ROM:00001ED0					     ; ROM:00000058
+ROM:00001ED0					     ; ROM:0000005C
+ROM:00001ED0					     ; ROM:00000060
+ROM:00001ED0					     ; ROM:00000064
+ROM:00001ED0					     ; ROM:00000068
+ROM:00001ED0					     ; ROM:0000006C
+ROM:00001ED0					     ; ROM:00000070
+ROM:00001ED0					     ; ROM:00000074
+ROM:00001ED0					     ; ROM:00000078
+ROM:00001ED0					     ; ROM:0000007C
+ROM:00001ED0					     ; ROM:00000080
+ROM:00001ED0					     ; ROM:00000084
+ROM:00001ED0					     ; ROM:00000088
+ROM:00001ED0					     ; ROM:0000008C
+ROM:00001ED0					     ; ROM:00000090
+ROM:00001ED0					     ; ROM:00000094
+ROM:00001ED0					     ; ROM:00000098
+ROM:00001ED0					     ; ROM:0000009C
+ROM:00001ED0					     ; ROM:000000A0
+ROM:00001ED0					     ; ROM:000000A4
+ROM:00001ED0					     ; ROM:000000A8
+ROM:00001ED0					     ; ROM:000000AC
+ROM:00001ED0					     ; ROM:000000B0
+ROM:00001ED0					     ; ROM:000000B4
+ROM:00001ED0					     ; ROM:000000B8
+ROM:00001ED0					     ; ROM:000000C0
+ROM:00001ED0					     ; ROM:000000C4
+ROM:00001ED0					     ; ROM:000000C8
+ROM:00001ED0					     ; ROM:000000CC
+ROM:00001ED0					     ; ROM:000000D0
+ROM:00001ED0					     ; ROM:000000D4
+ROM:00001ED0					     ; ROM:000000D8
+ROM:00001ED0					     ; ROM:000000DC
+ROM:00001ED0					     ; ROM:000000E0
+ROM:00001ED0					     ; ROM:000000E4
+ROM:00001ED0					     ; ROM:000000E8
+ROM:00001ED0					     ; ROM:000000EC
+ROM:00001ED0					     ; ROM:00000100
+ROM:00001ED0					     ; ROM:00000104
+ROM:00001ED0					     ; ROM:00000108
+ROM:00001ED0					     ; ROM:0000010C
+ROM:00001ED0					     ; ROM:00000110
+ROM:00001ED0					     ; ROM:00000114
+ROM:00001ED0					     ; ROM:00000118
+ROM:00001ED0					     ; ROM:0000011C
+ROM:00001ED0					     ; ROM:00000120
+ROM:00001ED0					     ; ROM:00000124
+ROM:00001ED0					     ; ROM:00000128
+ROM:00001ED0					     ; ROM:0000012C
+ROM:00001ED0					     ; ROM:00000130
+ROM:00001ED0					     ; ROM:00000134
+ROM:00001ED0					     ; ROM:00000138
+ROM:00001ED0					     ; ROM:0000013C
+ROM:00001ED0					     ; ROM:00000140
+ROM:00001ED0					     ; ROM:00000144
+ROM:00001ED0					     ; ROM:00000148
+ROM:00001ED0					     ; ROM:0000014C
+ROM:00001ED0					     ; ROM:00000150
+ROM:00001ED0					     ; ROM:00000154
+ROM:00001ED0					     ; ROM:00000158
+ROM:00001ED0					     ; ROM:0000015C
+ROM:00001ED0					     ; ROM:00000160
+ROM:00001ED0					     ; ROM:00000164
+ROM:00001ED0					     ; ROM:00000168
+ROM:00001ED0					     ; ROM:0000016C
+ROM:00001ED0					     ; ROM:00000170
+ROM:00001ED0					     ; ROM:00000174
+ROM:00001ED0					     ; ROM:00000178
+ROM:00001ED0					     ; ROM:0000017C
+ROM:00001ED0					     ; ROM:00000180
+ROM:00001ED0					     ; ROM:00000184
+ROM:00001ED0					     ; ROM:00000188
+ROM:00001ED0					     ; ROM:0000018C
+ROM:00001ED0					     ; ROM:00000190
+ROM:00001ED0					     ; ROM:00000194
+ROM:00001ED0					     ; ROM:00000198
+ROM:00001ED0					     ; ROM:0000019C
+ROM:00001ED0					     ; ROM:000001A0
+ROM:00001ED0					     ; ROM:000001A4
+ROM:00001ED0					     ; ROM:000001A8
+ROM:00001ED0					     ; ROM:000001AC ...
 ROM:00001ED0		     addq.w  #1,($21CC44).l
 ROM:00001ED6		     movem.l d0-a7,($21CC00).l
 ROM:00001EDE		     move.l  2(sp),($21CC40).l
@@ -2127,7 +2311,8 @@ ROM:00002031		     dc.b $12
 ROM:00002032 ; ---------------------------------------------------------------------------
 ROM:00002032
 ROM:00002032 loc_2032:				     ; CODE XREF: ROM:00001FE2
-ROM:00002032					     ; ROM:00002000 ...
+ROM:00002032					     ; ROM:00002000
+ROM:00002032					     ; ROM:00002022
 ROM:00002032		     move.l  a0,-(sp)
 ROM:00002034		     lea     unk_19B3,a0
 ROM:00002038		     bsr.w   sub_1E82
@@ -2507,7 +2692,10 @@ ROM:0000250A loc_250A:				     ; CODE XREF: ROM:000024DE
 ROM:0000250A		     move.l  #$400014,d1
 ROM:00002510
 ROM:00002510 locret_2510:			     ; CODE XREF: ROM:000024E2
-ROM:00002510					     ; ROM:000024EC ...
+ROM:00002510					     ; ROM:000024EC
+ROM:00002510					     ; ROM:000024F6
+ROM:00002510					     ; ROM:00002500
+ROM:00002510					     ; ROM:00002506
 ROM:00002510		     rts
 ROM:00002512
 ROM:00002512 ; =============== S U B R O U T I N E =======================================
@@ -2606,7 +2794,8 @@ ROM:0000265C ; =============== S U B R O U T I N E =============================
 ROM:0000265C
 ROM:0000265C
 ROM:0000265C sub_265C:				     ; CODE XREF: sub_265C+24
-ROM:0000265C					     ; sub_2692+144 ...
+ROM:0000265C					     ; sub_2692+144
+ROM:0000265C					     ; sub_2692:loc_27FC
 ROM:0000265C		     btst    #7,($FFF600).l  ; SCC3 RxBD0 !!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:00002664		     bne.w   loc_2678
 ROM:00002668		     move.b  ($21C010).l,d0
@@ -2686,7 +2875,8 @@ ROM:0000275C		     cmpi.b  #$14,($21CC78).l
 ROM:00002764		     bne.w   locret_2C18
 ROM:00002768
 ROM:00002768 loc_2768:				     ; CODE XREF: sub_2692+15A
-ROM:00002768					     ; sub_2692+186 ...
+ROM:00002768					     ; sub_2692+186
+ROM:00002768					     ; sub_2692+22A
 ROM:00002768		     lea     a?,a0	     ; "\n\r?> "
 ROM:0000276C		     bsr.w   sub_1E82
 ROM:00002770		     clr.b   ($21CC79).l
@@ -2703,7 +2893,9 @@ ROM:0000279E		     move.l  #$21CC60,($21CC74).l
 ROM:000027A8		     bne.w   locret_2C18
 ROM:000027AC
 ROM:000027AC loc_27AC:				     ; CODE XREF: sub_2692+E
-ROM:000027AC					     ; sub_2692+16 ...
+ROM:000027AC					     ; sub_2692+16
+ROM:000027AC					     ; sub_2692+1E
+ROM:000027AC					     ; sub_2692+122
 ROM:000027AC		     btst    #7,($FFF640).l  ; SCC3 TxBD0 !!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:000027B4		     bne.s   loc_27AC
 ROM:000027B6		     move.b  d3,($21C430).l
@@ -2746,7 +2938,8 @@ ROM:0000282A loc_282A:				     ; CODE XREF: sub_2692+1C0
 ROM:0000282A		     move.b  d2,d0
 ROM:0000282C
 ROM:0000282C loc_282C:				     ; CODE XREF: sub_2692+150
-ROM:0000282C					     ; sub_2692+166 ...
+ROM:0000282C					     ; sub_2692+166
+ROM:0000282C					     ; sub_2692+1A2
 ROM:0000282C		     btst    #7,($FFF640).l  ; SCC3 TxBD0 !!!!!!!!!!!!!!!!!!!!!!!!!!
 ROM:00002834		     bne.s   loc_282C
 ROM:00002836		     move.b  d0,($21C430).l
@@ -2773,7 +2966,9 @@ ROM:0000286E		     beq.w   loc_2874
 ROM:00002872		     subq.w  #1,d4
 ROM:00002874
 ROM:00002874 loc_2874:				     ; CODE XREF: sub_2692+1DC
-ROM:00002874					     ; sub_2692+214 ...
+ROM:00002874					     ; sub_2692+214
+ROM:00002874					     ; sub_2692+240
+ROM:00002874					     ; sub_2692+244
 ROM:00002874		     move.w  (a0),d0
 ROM:00002876		     bsr.w   sub_1E26
 ROM:0000287A		     cmp.b   #$57,d3 ; 'W'
@@ -2816,7 +3011,8 @@ ROM:000028D8 ; =============== S U B R O U T I N E =============================
 ROM:000028D8
 ROM:000028D8
 ROM:000028D8 sub_28D8:				     ; CODE XREF: sub_296C
-ROM:000028D8					     ; sub_296C+72 ...
+ROM:000028D8					     ; sub_296C+72 sub_2C1A
+ROM:000028D8					     ; sub_2C48:loc_2C4A
 ROM:000028D8		     movem.l d1/a0-a2,-(sp)
 ROM:000028DC		     tst.w   ($21CCDC).l
 ROM:000028E2		     bne.w   loc_2952
@@ -2858,7 +3054,14 @@ ROM:0000296C ; =============== S U B R O U T I N E =============================
 ROM:0000296C
 ROM:0000296C
 ROM:0000296C sub_296C:				     ; CODE XREF: sub_254A+56
-ROM:0000296C					     ; sub_254A+B4 ...
+ROM:0000296C					     ; sub_254A+B4
+ROM:0000296C					     ; sub_296C+70
+ROM:0000296C					     ; sub_296C+7A
+ROM:0000296C					     ; sub_296C+A2
+ROM:0000296C					     ; sub_296C+230
+ROM:0000296C					     ; sub_296C+23C
+ROM:0000296C					     ; sub_296C+292
+ROM:0000296C					     ; sub_296C+29E
 ROM:0000296C		     bsr.w   sub_28D8
 ROM:00002970		     cmp.b   #$D,d0
 ROM:00002974		     bne.w   loc_29D8
@@ -2950,7 +3153,8 @@ ROM:00002A9A		     bra.w   locret_2C18
 ROM:00002A9E ; ---------------------------------------------------------------------------
 ROM:00002A9E
 ROM:00002A9E loc_2A9E:				     ; CODE XREF: sub_296C+BC
-ROM:00002A9E					     ; sub_296C+E8 ...
+ROM:00002A9E					     ; sub_296C+E8
+ROM:00002A9E					     ; sub_296C+F2
 ROM:00002A9E		     bsr.w   sub_2C1A
 ROM:00002AA2		     lea     a?,a0	     ; "\n\r?> "
 ROM:00002AA6		     bsr.w   sub_1E82
@@ -3002,7 +3206,8 @@ ROM:00002B36		     bra.w   locret_2C18
 ROM:00002B3A ; ---------------------------------------------------------------------------
 ROM:00002B3A
 ROM:00002B3A loc_2B3A:				     ; CODE XREF: sub_296C+15E
-ROM:00002B3A					     ; sub_296C+184 ...
+ROM:00002B3A					     ; sub_296C+184
+ROM:00002B3A					     ; sub_296C+18E
 ROM:00002B3A		     bsr.w   sub_2C1A
 ROM:00002B3E		     lea     a?,a0	     ; "\n\r?> "
 ROM:00002B42		     bsr.w   sub_1E82
@@ -3089,7 +3294,16 @@ ROM:00002C0E		     lea     ($21CC4C).l,a0
 ROM:00002C14		     bsr.w   sub_1E82
 ROM:00002C18
 ROM:00002C18 locret_2C18:			     ; CODE XREF: sub_2692+42
-ROM:00002C18					     ; sub_2692+A0 ...
+ROM:00002C18					     ; sub_2692+A0
+ROM:00002C18					     ; sub_2692+B8
+ROM:00002C18					     ; sub_2692+D2
+ROM:00002C18					     ; sub_2692+F4
+ROM:00002C18					     ; sub_2692+116
+ROM:00002C18					     ; sub_2692+236
+ROM:00002C18					     ; sub_296C+12E
+ROM:00002C18					     ; sub_296C+144
+ROM:00002C18					     ; sub_296C+1CA
+ROM:00002C18					     ; sub_296C+1E0
 ROM:00002C18		     rts
 ROM:00002C18 ; End of function sub_296C
 ROM:00002C18
@@ -3098,7 +3312,10 @@ ROM:00002C1A ; =============== S U B R O U T I N E =============================
 ROM:00002C1A
 ROM:00002C1A
 ROM:00002C1A sub_2C1A:				     ; CODE XREF: sub_296C+F6
-ROM:00002C1A					     ; sub_296C:loc_2A9E ...
+ROM:00002C1A					     ; sub_296C:loc_2A9E
+ROM:00002C1A					     ; sub_296C+192
+ROM:00002C1A					     ; sub_296C:loc_2B3A
+ROM:00002C1A					     ; sub_2C1A+8
 ROM:00002C1A		     bsr.w   sub_28D8
 ROM:00002C1E		     cmp.b   #$D,d0
 ROM:00002C22		     bne.s   sub_2C1A
@@ -3117,7 +3334,19 @@ ROM:00002C48 ; =============== S U B R O U T I N E =============================
 ROM:00002C48
 ROM:00002C48
 ROM:00002C48 sub_2C48:				     ; CODE XREF: sub_296C+B2
-ROM:00002C48					     ; sub_296C+C4 ...
+ROM:00002C48					     ; sub_296C+C4
+ROM:00002C48					     ; sub_296C+E2
+ROM:00002C48					     ; sub_296C+154
+ROM:00002C48					     ; sub_296C+166
+ROM:00002C48					     ; sub_296C+17E
+ROM:00002C48					     ; sub_296C+1EA
+ROM:00002C48					     ; sub_296C+1F8
+ROM:00002C48					     ; sub_296C+20A
+ROM:00002C48					     ; sub_296C+22A
+ROM:00002C48					     ; sub_296C+246
+ROM:00002C48					     ; sub_296C+254
+ROM:00002C48					     ; sub_296C+26C
+ROM:00002C48					     ; sub_296C+28C
 ROM:00002C48		     clr.l   d1
 ROM:00002C4A
 ROM:00002C4A loc_2C4A:				     ; CODE XREF: sub_2C48+1E
