@@ -1,7 +1,7 @@
 
 MC68LC302 SBC
 ==========
-tinybug.bin Plasmode TinyBub v0.09 for MC68302 SCC3 UART
+tinybug.bin Plasmode TinyBug v0.09 for MC68302 SCC3 UART
 
 tinybug_SCC2_OK.bin for MC68LC302 SCC2 UART (Binary edited from tinybug.bin)
 
