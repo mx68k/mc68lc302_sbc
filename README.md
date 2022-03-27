@@ -4,6 +4,8 @@ MC68LC302 SBC
 tinybug.bin for MC68302 SCC3 UART
 
 tinybug_SCC2_OK.bin for MC68LC302 SCC2 UART
+
+Test_1.X68 DIO test program
  
 ## Pictures
 
