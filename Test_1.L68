@@ -1,0 +1,42 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 27.03.2022 18:28:35
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00000000  =00FFF000                  7  base    equ $FFF000
+00000000  =00FFF824                  8  PBCNT   equ base+$824   * port B control reg
+00000000  =00FFF826                  9  PBDDR   equ base+$826   * port B Data Direction Reg
+00000000  =00FFF828                 10  PBDAT   equ base+$828   * port B Data Reg
+00000000                            11  
+00000000                            12  
+00001000                            13      ORG    $1000
+00001000                            14  START:    
+00001000  33FC 0000 00FFF824        15      move.w #$0,PBCNT    * all pins as PB 3
+00001008  33FC 4FE8 00FFF826        16      move.w #$04FE8,PBDDR    * PB11 ,PB10 ,PB9 ,PB8 ,PB7 ,PB6 ,PB5 ,PB3 are outputs
+00001010                            17      
+00001010                            18  DIO:                  
+00001010                            19  
+00001010  33FC 0FE8 00FFF828        20      move.w #$0FE8,PBDAT     * PB11 ,PB10 ,PB9 ,PB8 ,PB7 ,PB6 ,PB5 ,PB3 - ON
+00001018  33FC 0000 00FFF828        21      move.w #$0000,PBDAT     * PB11 ,PB10 ,PB9 ,PB8 ,PB7 ,PB6 ,PB5 ,PB3 - OFF
+00001020  4EF8 1010                 22      jmp DIO
+00001024                            23  
+00001024                            24      END    START        
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BASE                FFF000
+DIO                 1010
+PBCNT               FFF824
+PBDAT               FFF828
+PBDDR               FFF826
+START               1000
