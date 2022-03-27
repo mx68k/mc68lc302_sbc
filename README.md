@@ -10,6 +10,7 @@ Test_1.X68 DIO test program
 ## Pictures
 
 tinybug SCC2
+
 ![tinybug SCC2](/tinybug_SCC2_OK.jpg)
 
 mc68lc302 sbc top  
