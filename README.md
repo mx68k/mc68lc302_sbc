@@ -1,5 +1,5 @@
 
-mc68lc302
+MC68LC302 SBC
 ==========
 tinybug.bin for MC68302 SCC3 UART
 
