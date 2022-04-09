@@ -24,7 +24,3 @@ mc68lc302 sbc bot
 mc68lc302pu25ct 
 
 ![mc68lc302pu25ct](/mc68lc302pu25ct.jpg)
-
-## Current status
-
-start
